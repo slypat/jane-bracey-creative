@@ -3,6 +3,7 @@ import { Grid, Row, Col } from 'react-bootstrap';
 import Gallery from 'react-photo-gallery';
 import Lightbox from 'react-images';
 import Contact from './components/contact';
+import CopyRight from './components/copyright';
 import photos from './resources/photos';
 import './App.css';
 
@@ -74,6 +75,14 @@ class App extends React.Component {
               onClose={this.handleCloseLightbox}
               backdropClosesModal={true}
               width={1600}
+            />
+          </Col>
+        </Row>
+        <Row>
+          <Col md={12}>
+            <CopyRight
+              year={2017}
+              holder="Jane Bracey"
             />
           </Col>
         </Row>
