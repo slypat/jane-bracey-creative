@@ -1,94 +1,63 @@
-import React from 'react';
-import { Grid, Row, Col } from 'react-bootstrap';
+import React, {useState, useCallback} from 'react';
+import { Container, Row, Col } from 'react-bootstrap';
 import Gallery from 'react-photo-gallery';
-import Lightbox from 'react-images';
+import Lightbox from 'react-image-lightbox';
 import Contact from './components/contact';
 import CopyRight from './components/copyright';
 import photos from './resources/photos';
 import './App.css';
+ 
+const App = () => {
+  const [currentImage, setCurrentImage] = useState(0);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
 
-class App extends React.Component {
-  constructor(props) {
-    super(props);
+  const openLightbox = useCallback((event, { photo, index }) => {
+    setCurrentImage(index);
+    setLightboxOpen(true);
+  }, []);
 
-    this.state = {
-      lightboxIsOpen: false,
-      currentImage: 0,
-      photos
-    };
+  const closeLightbox = () => {
+    setCurrentImage(0);
+    setLightboxOpen(false);
+  };
 
-    this.handleCloseLightbox = this.handleCloseLightbox.bind(this);
-    this.handleOpenLightbox = this.handleOpenLightbox.bind(this);
-    this.handleGoToPreviousLightboxImage = this.handleGoToPreviousLightboxImage.bind(this);
-    this.handleGoToNextLightboxImage = this.handleGoToNextLightboxImage.bind(this);
-  }
-
-  handleCloseLightbox(event) {
-    this.setState({ 
-      lightboxIsOpen: false, 
-      currentImage: 0 
-    });
-  }
-
-  handleOpenLightbox(index, event) {
-    event.preventDefault();
-    this.setState({
-      lightboxIsOpen: true, 
-      currentImage: index
-    });
-  }
-
-  handleGoToPreviousLightboxImage(event) {
-    this.setState({ 
-      currentImage: this.state.currentImage - 1 
-    });
-  }
-
-  handleGoToNextLightboxImage(event) {
-    this.setState({ 
-      currentImage: this.state.currentImage + 1 
-    });
-  }
-
-  render() {
-    return (
-      <Grid>
-        <Row>
-          <Col md={12}>
-            <Contact
-              name="JaneBraceyCreative"
-              email="janebracey1@gmail.com"
-              phone="0771 862 6084" />
-          </Col>      
-        </Row>
-        <Row>
-          <Col md={12}>
-            <Gallery 
-              photos={this.state.photos}
-              onClickPhoto={this.handleOpenLightbox} />
+  return (
+    <Container>
+      <Row>
+        <Col md={12}>
+          <Contact
+            name="JaneBraceyCreative"
+            email="janebracey1@gmail.com"
+            phone="0771 862 6084" />
+        </Col>      
+      </Row>
+      <Row>
+        <Col md={12}>
+          <Gallery 
+            photos={photos}
+            onClick={openLightbox} />
+          {lightboxOpen && (
             <Lightbox
-              images={this.state.photos}
-              currentImage={this.state.currentImage}
-              isOpen={this.state.lightboxIsOpen}
-              onClickPrev={this.handleGoToPreviousLightboxImage}
-              onClickNext={this.handleGoToNextLightboxImage}
-              onClose={this.handleCloseLightbox}
-              backdropClosesModal={true}
-              width={1600}
+              mainSrc={photos[currentImage].src}
+              nextSrc={photos[(currentImage + 1) % photos.length].src}
+              prevSrc={photos[(currentImage + photos.length - 1) % photos.length].src}
+              onMovePrevRequest={() => setCurrentImage((currentImage + photos.length - 1) % photos.length)}
+              onMoveNextRequest={() => setCurrentImage((currentImage + photos.length + 1) % photos.length)}
+              onCloseRequest={closeLightbox}
             />
-          </Col>
-        </Row>
-        <Row>
-          <Col md={12}>
-            <CopyRight
-              year={2017}
-              holder="Jane Bracey"
-            />
-          </Col>
-        </Row>
-      </Grid>
-    );
-  }
-}
+          )}
+        </Col>
+      </Row>
+      <Row>
+        <Col md={12}>
+          <CopyRight
+            year={2020}
+            holder="Jane Bracey"
+          />
+        </Col>
+      </Row>
+    </Container>
+  );
+};
 
 export default App;
