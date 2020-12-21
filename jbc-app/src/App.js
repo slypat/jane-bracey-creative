@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { HashRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import NavDropdown from 'react-bootstrap/NavDropdown';
@@ -10,13 +10,25 @@ import './App.css';
 const App = () => (
   <Router>
     <Navbar bg="light" expand="lg" fixed="top">
-      <Navbar.Brand href="/">JaneBraceyCreative</Navbar.Brand>
+      <Navbar.Brand>
+        <Link className="App-nav-link" to="/">
+          JaneBraceyCreative
+        </Link>
+      </Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="mr-auto">
           <NavDropdown title="About" id="about-dropdown">
-            <NavDropdown.Item href="/about/artist-statement">Artist Statement</NavDropdown.Item>
-            <NavDropdown.Item href="/about/resume">Resum&eacute;</NavDropdown.Item>
+            <NavDropdown.Item>
+              <Link className="App-nav-link" to="/about/artist-statement">
+                Artist Statement
+              </Link>
+            </NavDropdown.Item>
+            <NavDropdown.Item>
+              <Link className="App-nav-link" to="/about/resume">
+                Resum&eacute;
+              </Link>
+            </NavDropdown.Item>
           </NavDropdown>
         </Nav>
       </Navbar.Collapse>

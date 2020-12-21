@@ -10,3 +10,12 @@
   margin-top: 20px;
   margin-bottom: 20px;
 }
+
+.App-nav-link {
+  color: inherit;
+}
+
+.App-nav-link:hover {
+  color: inherit;
+  text-decoration: none;
+}
