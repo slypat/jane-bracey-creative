@@ -1,63 +1,43 @@
-import React, {useState, useCallback} from 'react';
-import { Container, Row, Col } from 'react-bootstrap';
-import Gallery from 'react-photo-gallery';
-import Lightbox from 'react-image-lightbox';
-import Contact from './components/contact';
-import CopyRight from './components/copyright';
-import photos from './resources/photos';
+import React from 'react';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import Navbar from 'react-bootstrap/Navbar';
+import Nav from 'react-bootstrap/Nav';
+import NavDropdown from 'react-bootstrap/NavDropdown';
+import Home from './home';
+import { ArtistStatement, Resume } from './about';
 import './App.css';
- 
-const App = () => {
-  const [currentImage, setCurrentImage] = useState(0);
-  const [lightboxOpen, setLightboxOpen] = useState(false);
 
-  const openLightbox = useCallback((event, { photo, index }) => {
-    setCurrentImage(index);
-    setLightboxOpen(true);
-  }, []);
-
-  const closeLightbox = () => {
-    setCurrentImage(0);
-    setLightboxOpen(false);
-  };
-
-  return (
-    <Container>
-      <Row>
-        <Col md={12}>
-          <Contact
-            name="JaneBraceyCreative"
-            email="janebracey1@gmail.com"
-            phone="0771 862 6084" />
-        </Col>      
-      </Row>
-      <Row>
-        <Col md={12}>
-          <Gallery 
-            photos={photos}
-            onClick={openLightbox} />
-          {lightboxOpen && (
-            <Lightbox
-              mainSrc={photos[currentImage].src}
-              nextSrc={photos[(currentImage + 1) % photos.length].src}
-              prevSrc={photos[(currentImage + photos.length - 1) % photos.length].src}
-              onMovePrevRequest={() => setCurrentImage((currentImage + photos.length - 1) % photos.length)}
-              onMoveNextRequest={() => setCurrentImage((currentImage + photos.length + 1) % photos.length)}
-              onCloseRequest={closeLightbox}
-            />
-          )}
-        </Col>
-      </Row>
-      <Row>
-        <Col md={12}>
-          <CopyRight
-            year={2020}
-            holder="Jane Bracey"
-          />
-        </Col>
-      </Row>
-    </Container>
-  );
-};
+const App = () => (
+  <Router>
+    <Navbar bg="light" expand="lg" fixed="top">
+      <Navbar.Brand href="/">JaneBraceyCreative</Navbar.Brand>
+      <Navbar.Toggle aria-controls="basic-navbar-nav" />
+      <Navbar.Collapse id="basic-navbar-nav">
+        <Nav className="mr-auto">
+          <NavDropdown title="About" id="about-dropdown">
+            <NavDropdown.Item href="/about/artist-statement">Artist Statement</NavDropdown.Item>
+            <NavDropdown.Item href="/about/resume">Resum&eacute;</NavDropdown.Item>
+          </NavDropdown>
+        </Nav>
+      </Navbar.Collapse>
+    </Navbar>
+    <div className="App-content-container">
+      <Switch>
+        <Route path="/about/artist-statement">
+          <ArtistStatement />
+        </Route>
+        <Route path="/about/resume">
+          <Resume />
+        </Route>
+        <Route path="/">
+          <Home />
+        </Route>
+      </Switch>
+      <div className="App-footer-container">
+        <p className="lead text-center">&copy; 2020 Jane Bracey</p>
+      </div>
+    </div>
+  </Router>
+);
 
 export default App;

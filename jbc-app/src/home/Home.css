@@ -1,0 +1,20 @@
+.Home-gallery-container {
+  max-width: 1098px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.Home-header-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.Home-contact-details {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-self: stretch;
+}
